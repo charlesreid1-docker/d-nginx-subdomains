@@ -1,0 +1,46 @@
+####################
+#
+# charlesreid1.blue
+# https
+# 443
+# 
+####################
+
+server {
+
+    # https://charlesreid1.blue
+
+    listen 443;
+    listen [::]:443;
+
+    ssl on;
+    ssl_certificate /etc/letsencrypt/live/charlesreid1.blue/cert.pem
+    ssl_certificate_key /etc/letsencrypt/live/charlesreid1.blue/privkey.pem
+
+    root /www/charlesreid1.blue/htdocs;
+    index index.html;
+
+    server_name charlesreid1.blue;
+
+    client_max_body_size 100m;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location /wiki/ {
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://127.0.0.1:8080/wiki/;
+    }
+
+    location /w/ {
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://127.0.0.1:8080/w/;
+    }
+
+}
+
