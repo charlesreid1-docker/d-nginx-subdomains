@@ -1,1 +1,2 @@
-letsencrypt
+letsencrypt/
+letsencrypt_certs/
