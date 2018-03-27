@@ -1,2 +1,4 @@
 letsencrypt/
 letsencrypt_certs/
+nginx.conf.default
+rojo.charlesreid1.com
