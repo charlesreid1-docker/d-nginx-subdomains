@@ -16,8 +16,9 @@ server {
     ssl on;
     ssl_certificate /etc/letsencrypt/live/charlesreid1.blue/fullchain.pem
     ssl_certificate_key /etc/letsencrypt/live/charlesreid1.blue/privkey.pem
+    include /etc/letsencrypt/options-ssl-nginx.conf
 
-    root /www/charlesreid1.blue/htdocs;
+    #root /www/charlesreid1.blue/htdocs;
     index index.html;
 
     server_name charlesreid1.blue;

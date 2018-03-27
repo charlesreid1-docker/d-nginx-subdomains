@@ -33,11 +33,19 @@ No data volumes are used.
 
 ## Certs and Secrets
 
-Lets Encrypt generates certs in a container 
-with a one-liner, dumps them to bind-mounted 
-host directory.
+Lets Encrypt should generate certificates at `/etc/letsencrypt/live/domain/`:
 
-This file can be generated 
+```
+root@krash:/home/charles/codes/docker/pod-charlesreid1-site# ls -l /etc/letsencrypt/live/charlesreid1.blue/
+total 4
+lrwxrwxrwx 1 root root  41 Mar 27 01:03 cert.pem -> ../../archive/charlesreid1.blue/cert1.pem
+lrwxrwxrwx 1 root root  42 Mar 27 01:03 chain.pem -> ../../archive/charlesreid1.blue/chain1.pem
+lrwxrwxrwx 1 root root  46 Mar 27 01:03 fullchain.pem -> ../../archive/charlesreid1.blue/fullchain1.pem
+lrwxrwxrwx 1 root root  44 Mar 27 01:03 privkey.pem -> ../../archive/charlesreid1.blue/privkey1.pem
+-rw-r--r-- 1 root root 543 Mar 27 01:03 README
+```
+
+These certificate files will be bind-mounted into the nginx container.
 
 ## Backups
 

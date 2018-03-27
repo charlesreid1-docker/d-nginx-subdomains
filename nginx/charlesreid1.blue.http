@@ -17,7 +17,7 @@ server {
 
     server_name charlesreid1.blue;
 
-    location /.well-known/acme-challenge/ {
+    location /.well-known {
         allow all;
         root /var/www/letsencrypt/;
     }
