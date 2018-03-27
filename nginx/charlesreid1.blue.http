@@ -17,9 +17,17 @@ server {
 
     server_name charlesreid1.blue;
 
-    return 301 https://$server_name$request_uri;
+    location /.well-known/acme-challenge/ {
+        allow all;
+        root /var/www/letsencrypt/;
+    }
+
+    location / {
+        return 301 https://$server_name$request_uri;
+    }
 
 }
+
 server {
 
     # http://www.charlesreid1.blue --> https://charlesreid1.blue
@@ -29,8 +37,11 @@ server {
 
     server_name www.charlesreid1.blue;
 
-    return 301 https://charlesreid1.blue$request_uri;
+    location / {
+        return 301 https://charlesreid1.blue$request_uri;
+    }
 }
+
 server {
 
     # http://git.charlesreid1.blue --> https://git.charlesreid1.blue
@@ -39,6 +50,8 @@ server {
 
     server_name git.charlesreid1.blue;
 
-    return 301 https://git.charlesreid1.blue$request_uri;
+    location / {
+        return 301 https://git.charlesreid1.blue$request_uri;
+    }
 }
 
