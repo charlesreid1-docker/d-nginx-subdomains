@@ -10,6 +10,8 @@
 
 server {
 
+    user www-data:www-data;
+
     # http://charlesreid1.blue --> https://charlesreid1.blue
 
     listen 80;
@@ -17,10 +19,10 @@ server {
 
     server_name charlesreid1.blue;
 
-    location /.well-known {
-        allow all;
-        root /var/www/letsencrypt/;
-    }
+    ### location /.well-known {
+    ###     allow all;
+    ###     root /var/www/letsencrypt/;
+    ### }
 
     location / {
         return 301 https://$server_name$request_uri;
@@ -29,6 +31,8 @@ server {
 }
 
 server {
+
+    user www-data:www-data;
 
     # http://www.charlesreid1.blue --> https://charlesreid1.blue
 
@@ -43,6 +47,8 @@ server {
 }
 
 server {
+
+    user www-data:www-data;
 
     # http://git.charlesreid1.blue --> https://git.charlesreid1.blue
 
