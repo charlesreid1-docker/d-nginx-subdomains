@@ -19,11 +19,6 @@ server {
 
     server_name charlesreid1.blue;
 
-    ### location /.well-known {
-    ###     allow all;
-    ###     root /var/www/letsencrypt/;
-    ### }
-
     location / {
         return 301 https://$server_name$request_uri;
     }
