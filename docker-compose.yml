@@ -8,7 +8,7 @@ services:
     hostname: charlesreid1.blue
     command: /bin/bash -c "nginx -g 'daemon off;'"
     volumes:
-      - "./nginx/:/etc/nginx/conf/conf.d"
+      - "./conf.d:/etc/nginx/conf.d"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/letsencrypt:/etc/letsencrypt"
       - "./www:/usr/share/nginx/html:ro"
