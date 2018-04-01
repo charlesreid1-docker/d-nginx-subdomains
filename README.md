@@ -9,6 +9,12 @@ The services are:
 
 Pretty simple, right?
 
+## Config files
+
+All `*.conf` files in the `conf.d/` directory will be picked up by nginx.
+
+The config files must be named `*.conf`.
+
 ## Volumes
 
 No data volumes are used.
