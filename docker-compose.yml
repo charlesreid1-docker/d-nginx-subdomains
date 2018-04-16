@@ -2,16 +2,22 @@
 # https://github.com/dib-lab/wort/blob/master/docker-compose.yml
 version: "3.1"
 services:
-  stormy_nginx:
+  stormy_nginx_subs:
     restart: always
     image: nginx
-    hostname: charlesreid1.blue
     command: /bin/bash -c "nginx -g 'daemon off;'"
     volumes:
       - "./conf.d:/etc/nginx/conf.d"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/letsencrypt:/etc/letsencrypt"
-      - "./www:/usr/share/nginx/html:ro"
+      - "./www:/www/pages.charlesreid1.com/htdocs:ro"
+        #      - "/etc/localtime:/etc/localtime:ro"
+        #      - "/etc/letsencrypt:/etc/letsencrypt"
+        #      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
+        #      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
+        #      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
+        #network_mode: host
     ports:
-      - "80:80"
-      - "443:443"
+      - "192.168.1.152:7777:7777"
+        #      - "10.5.0.2:7778:7778"
+        #      - "10.5.0.2:7779:7779"
+
+# https://docs.docker.com/compose/compose-file/#network_mode

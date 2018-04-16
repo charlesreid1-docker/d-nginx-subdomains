@@ -1,64 +1,154 @@
-# pod-charlesreid1-site
+# d-nginx-subdomains
 
-This repo contains docker compose file for running
-the charlesreid1.com site.
+This repo contains docker containers
+and a docker compose file for running
+an nginx web server for subdomain
+one-pagers.
 
-The services are:
+The services are just:
 * nginx
-* Lets Encrypt
+
+If you want to do SSL you can, but you have to 
+run Let's Encrypt outside of the container
+and bind-mount your certificates into the 
+container at `/etc/letsencrypt`.
 
 Pretty simple, right?
 
-## Config files
+# Config files
 
 All `*.conf` files in the `conf.d/` directory will be picked up by nginx.
 
 The config files must be named `*.conf`.
 
-## Volumes
+
+# Volumes
 
 No data volumes are used.
 
 * nginx static content is a bind-mounted host directory
-* lets encrypt container generates site certs into bind-mounted host directory
-* nginx certificates come from docker secrets (?)
+* lets encrypt generates site certs, which will be bind-mounted into host directory
+
+Here is the volumes directive in `docker-compose.yml`:
 
 ```
-  web:
     volumes:
-      - ./letsencrypt_certs:/etc/nginx/certs
-      - ./letsencrypt_www:/var/www/letsencrypt
+      - "./conf.d:/etc/nginx/conf.d"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/letsencrypt:/etc/letsencrypt"
+      - "./www:/usr/share/nginx/html:ro"
+```
 
-  letsencrypt:
-    image: certbot/certbot
-    command: /bin/true
+The first line sets the nginx config files,
+the second line sets the time in the container
+to the time in the host, the third mounts the 
+SSL certificates, and the last mounts the 
+live web content.
+
+For multiple one-pagers, the last line will
+get more complicated, and will need to match
+the directories in the nginx config file:
+
+```
     volumes:
-      - ./letsencrypt_certs:/etc/letsencrypt
-      - ./letsencrypt_www:/var/www/letsencrypt
+      - "./conf.d:/etc/nginx/conf.d"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/letsencrypt:/etc/letsencrypt"
+      - "/www/site1.com/htdocs:/www/site1.com/htdocs:ro"
+      - "/www/site2.com/htdocs:/www/site2.com/htdocs:ro"
+      - "/www/site3.com/htdocs:/www/site3.com/htdocs:ro"
+      - "/www/site4.com/htdocs:/www/site4.com/htdocs:ro"
 ```
 
-## Certs and Secrets
 
-Lets Encrypt should generate certificates at `/etc/letsencrypt/live/domain/`:
+# Backups
+
+Site content comes from git.charlesreid1.com,
+nothing to back up.
+
+# Workflow
+
+### Static Content Directory Layout
+
+Directories with static content are bind-mounted
+read-only into the container. To update the content
+being served, just update the content directory
+on the host.
+
+(This enables you to use version control to 
+track the live site contents.)
+
+The section below covers how accomplish this layout.
+You should have your web content laid out as follows
+on the host:
 
 ```
-root@krash:/home/charles/codes/docker/pod-charlesreid1-site# ls -l /etc/letsencrypt/live/charlesreid1.blue/
-total 4
-lrwxrwxrwx 1 root root  41 Mar 27 01:03 cert.pem -> ../../archive/charlesreid1.blue/cert1.pem
-lrwxrwxrwx 1 root root  42 Mar 27 01:03 chain.pem -> ../../archive/charlesreid1.blue/chain1.pem
-lrwxrwxrwx 1 root root  46 Mar 27 01:03 fullchain.pem -> ../../archive/charlesreid1.blue/fullchain1.pem
-lrwxrwxrwx 1 root root  44 Mar 27 01:03 privkey.pem -> ../../archive/charlesreid1.blue/privkey1.pem
--rw-r--r-- 1 root root 543 Mar 27 01:03 README
+/www
+    example.com/
+        htdocs/
+            index.html
+            ...
+        example.com-src/
+            README.md
+            pelican/
+            ...
+        git/
+            <contents of .git dir>
+            ...
+
+    example2.com/
+        htdocs/
+            ...
+        example2.com-src/
+            ...
+        git/
+            ...
 ```
 
-These certificate files will be bind-mounted into the nginx container.
+In the container, you will have a mirrored directory
+structure, but only `htdocs`:
 
-## Backups
+```
+/www
+    example.com/
+        htdocs/
+            index.html
+            ...
 
-Site content comes from github.
-Nothing to back up.
+    example2.com/
+        htdocs/
+            ...
+```
 
-## Static Content
+
+
+### Deploying Static Content with Git
+
+You can use git to deploy static content, but take care
+not to put your `.git` directory into the live 
+web directory.
+
+```
+git clone \
+  --separate-git-dir=/www/example.com/git \
+  -b gh-pages \
+  <url-of-static-site> \
+  /www/example.com/htdocs
+```
+
+Let's walk through that:
+
+* Clone command to deploy content fresh
+* Separate git dir to keep git from being live
+* Branch `gh-pages` (we decided to match Github's convention)
+* Url of static site from git.charlesreid1.com
+* The path of the final cloned repo (bind mounted into container)
+
+See scripts for details.
+
+### Updating Static Content with Git
+
+
 
 Question: should we bake the site's 
 static content into the container,
@@ -69,6 +159,7 @@ Answer: No. We clone a local copy of
 the gh-pages branch, and bind-mount 
 that into the container.
 
-Updating the site is as simple as 
-`git pull origin gh-pages`.
+This enables webhooks to update 
+the static site contents
+without disturbing the container.
 
