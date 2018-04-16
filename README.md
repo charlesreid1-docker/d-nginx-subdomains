@@ -8,10 +8,12 @@ one-pagers.
 The services are just:
 * nginx
 
-If you want to do SSL you can, but you have to 
-run Let's Encrypt outside of the container
-and bind-mount your certificates into the 
-container at `/etc/letsencrypt`.
+This is also intended to be reverse proxied
+by another frontend nginx server,
+so this one-container pod will bind 
+to a VPN IP address and establish
+(unecrypted) HTTP connections over the 
+(encrypted) VPN connection.
 
 Pretty simple, right?
 
@@ -66,31 +68,13 @@ Here is the volumes directive in `docker-compose.yml`:
 ```
     volumes:
       - "./conf.d:/etc/nginx/conf.d"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/letsencrypt:/etc/letsencrypt"
-      - "./www:/usr/share/nginx/html:ro"
+      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
+      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
+      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
 ```
 
 The first line sets the nginx config files,
-the second line sets the time in the container
-to the time in the host, the third mounts the 
-SSL certificates, and the last mounts the 
-live web content.
-
-For multiple one-pagers, the last line will
-get more complicated, and will need to match
-the directories in the nginx config file:
-
-```
-    volumes:
-      - "./conf.d:/etc/nginx/conf.d"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/letsencrypt:/etc/letsencrypt"
-      - "/www/site1.com/htdocs:/www/site1.com/htdocs:ro"
-      - "/www/site2.com/htdocs:/www/site2.com/htdocs:ro"
-      - "/www/site3.com/htdocs:/www/site3.com/htdocs:ro"
-      - "/www/site4.com/htdocs:/www/site4.com/htdocs:ro"
-```
+the rest set the static content locations.
 
 
 # Backups
@@ -153,7 +137,6 @@ structure, but only `htdocs`:
 ```
 
 
-
 ### Deploying Static Content with Git
 
 You can use git to deploy static content, but take care
@@ -181,17 +164,10 @@ See scripts for details.
 ### Updating Static Content with Git
 
 
+```
+git pull \
+```
 
-Question: should we bake the site's 
-static content into the container,
-and require rebuild/redeploy when
-site content changes?
+specify git-dir
 
-Answer: No. We clone a local copy of 
-the gh-pages branch, and bind-mount 
-that into the container.
-
-This enables webhooks to update 
-the static site contents
-without disturbing the container.
-
+specify work-dir
