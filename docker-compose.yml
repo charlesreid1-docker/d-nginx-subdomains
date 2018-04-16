@@ -1,5 +1,3 @@
-# https://hub.docker.com/r/kvaps/letsencrypt-webroot/
-# https://github.com/dib-lab/wort/blob/master/docker-compose.yml
 version: "3.1"
 services:
   stormy_nginx_subs:
@@ -9,15 +7,12 @@ services:
     volumes:
       - "./conf.d:/etc/nginx/conf.d"
       - "./www:/www/pages.charlesreid1.com/htdocs:ro"
-        #      - "/etc/localtime:/etc/localtime:ro"
-        #      - "/etc/letsencrypt:/etc/letsencrypt"
         #      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
         #      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
         #      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
-        #network_mode: host
     ports:
-      - "192.168.1.152:7777:7777"
-        #      - "10.5.0.2:7778:7778"
-        #      - "10.5.0.2:7779:7779"
+      - "10.5.0.2:7777:7777"
+      - "10.5.0.2:7778:7778"
+      - "10.5.0.2:7779:7779"
 
 # https://docs.docker.com/compose/compose-file/#network_mode
