@@ -15,6 +15,38 @@ container at `/etc/letsencrypt`.
 
 Pretty simple, right?
 
+# Networking
+
+The setup for this one-container docker pod 
+is to have an nginx container bound to all
+addresses inside the container (see nginx.conf
+selection below) and then bind that port 
+inside the container to a specific IP and port
+on the host (see docker-compose selection below).
+
+The nginx configuration file contains a listen
+directive that binds nginx to all addresses 
+inside the container:
+
+```
+server {
+    listen *:7777;
+```
+
+Meanwhile, in the `docker-compose.yml` file,
+we bind the container's port 7777 to the 
+host's port 7777, but only on a private
+IP address:
+
+```
+servies:
+  stormy_nginx_subs:
+    ...
+    ports:
+      - "10.5.0.2:7777:7777"
+```
+
+
 # Config files
 
 All `*.conf` files in the `conf.d/` directory will be picked up by nginx.
