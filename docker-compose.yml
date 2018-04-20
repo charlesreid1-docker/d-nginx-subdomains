@@ -11,8 +11,8 @@ services:
         #      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
         #      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
     ports:
-      - "10.5.0.2:7777:7777"
-      - "10.5.0.2:7778:7778"
-      - "10.5.0.2:7779:7779"
+      - "7777:7777"
+      - "7778:7778"
+      - "7779:7779"
 
 # https://docs.docker.com/compose/compose-file/#network_mode
