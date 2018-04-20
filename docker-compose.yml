@@ -6,10 +6,9 @@ services:
     command: /bin/bash -c "nginx -g 'daemon off;'"
     volumes:
       - "./conf.d:/etc/nginx/conf.d"
-      - "./www:/www/pages.charlesreid1.com/htdocs:ro"
-        #      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
-        #      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
-        #      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
+      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
+      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
+      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
     ports:
       - "7777:7777"
       - "7778:7778"
