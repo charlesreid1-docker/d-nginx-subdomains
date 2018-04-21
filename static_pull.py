@@ -25,7 +25,6 @@ for name in onepagers:
     url = onepagers[name]
 
     basedir = os.path.join("/www",name)
-    mkdircmd = ["mkdir","-p",basedir]
     pullcmd = ["git","-C",basedir,"--git-dir=git","--work-tree=htdocs","pull","origin","gh-pages"]
 
     if( os.path.isdir( os.path.join(basedir,"git") is False ) 
@@ -43,7 +42,6 @@ for name in onepagers:
     print(" ")
     response = input('Okay to proceed? (y/n) ')
     if(response=='y' or response=='Y' or response=='yes'):
-        subprocess.call(mkdircmd)
         subprocess.call(pullcmd)
 
 
