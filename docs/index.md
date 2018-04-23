@@ -84,7 +84,7 @@ nothing to back up.
 
 # Workflow
 
-### Static Content Directory Layout
+## Static Content Directory Layout
 
 Directories with static content are bind-mounted
 read-only into the container. To update the content
@@ -137,7 +137,7 @@ structure, but only `htdocs`:
 ```
 
 
-### Deploying Static Content with Git
+## Deploying Static Content with Git
 
 You can use git to deploy static content, but take care
 not to put your `.git` directory into the live 
@@ -161,13 +161,12 @@ Let's walk through that:
 
 See scripts for details.
 
-### Updating Static Content with Git
+## Updating Static Content with Git
 
 
 ```
-git pull \
+git \
+    --git-dir=/www/example.com/git \
+    --work-tree=/www/example.com/htdocs/reponame \
+    pull origin gh-pages
 ```
-
-specify git-dir
-
-specify work-dir
