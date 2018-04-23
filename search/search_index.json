@@ -1,0 +1,54 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "d-nginx-subdomains\n\n\nThis repo contains docker containers\nand a docker compose file for running\nan nginx web server for subdomain\none-pagers.\n\n\nThe services are just:\n* nginx\n\n\nThis is also intended to be reverse proxied\nby another frontend nginx server,\nso this one-container pod will bind \nto a VPN IP address and establish\n(unecrypted) HTTP connections over the \n(encrypted) VPN connection.\n\n\nPretty simple, right?\n\n\nNetworking\n\n\nThe setup for this one-container docker pod \nis to have an nginx container bound to all\naddresses inside the container (see nginx.conf\nselection below) and then bind that port \ninside the container to a specific IP and port\non the host (see docker-compose selection below).\n\n\nThe nginx configuration file contains a listen\ndirective that binds nginx to all addresses \ninside the container:\n\n\nserver {\n    listen *:7777;\n\n\n\n\nMeanwhile, in the \ndocker-compose.yml\n file,\nwe bind the container's port 7777 to the \nhost's port 7777, but only on a private\nIP address:\n\n\nservies:\n  stormy_nginx_subs:\n    ...\n    ports:\n      - \"10.5.0.2:7777:7777\"\n\n\n\n\nConfig files\n\n\nAll \n*.conf\n files in the \nconf.d/\n directory will be picked up by nginx.\n\n\nThe config files must be named \n*.conf\n.\n\n\nVolumes\n\n\nNo data volumes are used.\n\n\n\n\nnginx static content is a bind-mounted host directory\n\n\nlets encrypt generates site certs, which will be bind-mounted into host directory\n\n\n\n\nHere is the volumes directive in \ndocker-compose.yml\n:\n\n\n    volumes:\n      - \"./conf.d:/etc/nginx/conf.d\"\n      - \"/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro\"\n      - \"/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro\"\n      - \"/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro\"\n\n\n\n\nThe first line sets the nginx config files,\nthe rest set the static content locations.\n\n\nBackups\n\n\nSite content comes from git.charlesreid1.com,\nnothing to back up.\n\n\nWorkflow\n\n\nStatic Content Directory Layout\n\n\nDirectories with static content are bind-mounted\nread-only into the container. To update the content\nbeing served, just update the content directory\non the host.\n\n\n(This enables you to use version control to \ntrack the live site contents.)\n\n\nThe section below covers how accomplish this layout.\nYou should have your web content laid out as follows\non the host:\n\n\n/www\n    example.com/\n        htdocs/\n            index.html\n            ...\n        example.com-src/\n            README.md\n            pelican/\n            ...\n        git/\n            <contents of .git dir>\n            ...\n\n    example2.com/\n        htdocs/\n            ...\n        example2.com-src/\n            ...\n        git/\n            ...\n\n\n\n\nIn the container, you will have a mirrored directory\nstructure, but only \nhtdocs\n:\n\n\n/www\n    example.com/\n        htdocs/\n            index.html\n            ...\n\n    example2.com/\n        htdocs/\n            ...\n\n\n\n\nDeploying Static Content with Git\n\n\nYou can use git to deploy static content, but take care\nnot to put your \n.git\n directory into the live \nweb directory.\n\n\ngit clone \\\n  --separate-git-dir=/www/example.com/git \\\n  -b gh-pages \\\n  <url-of-static-site> \\\n  /www/example.com/htdocs\n\n\n\n\nLet's walk through that:\n\n\n\n\nClone command to deploy content fresh\n\n\nSeparate git dir to keep git from being live\n\n\nBranch \ngh-pages\n (we decided to match Github's convention)\n\n\nUrl of static site from git.charlesreid1.com\n\n\nThe path of the final cloned repo (bind mounted into container)\n\n\n\n\nSee scripts for details.\n\n\nUpdating Static Content with Git\n\n\ngit pull \\\n\n\n\n\nspecify git-dir\n\n\nspecify work-dir",
+            "title": "Home"
+        },
+        {
+            "location": "/#d-nginx-subdomains",
+            "text": "This repo contains docker containers\nand a docker compose file for running\nan nginx web server for subdomain\none-pagers.  The services are just:\n* nginx  This is also intended to be reverse proxied\nby another frontend nginx server,\nso this one-container pod will bind \nto a VPN IP address and establish\n(unecrypted) HTTP connections over the \n(encrypted) VPN connection.  Pretty simple, right?",
+            "title": "d-nginx-subdomains"
+        },
+        {
+            "location": "/#networking",
+            "text": "The setup for this one-container docker pod \nis to have an nginx container bound to all\naddresses inside the container (see nginx.conf\nselection below) and then bind that port \ninside the container to a specific IP and port\non the host (see docker-compose selection below).  The nginx configuration file contains a listen\ndirective that binds nginx to all addresses \ninside the container:  server {\n    listen *:7777;  Meanwhile, in the  docker-compose.yml  file,\nwe bind the container's port 7777 to the \nhost's port 7777, but only on a private\nIP address:  servies:\n  stormy_nginx_subs:\n    ...\n    ports:\n      - \"10.5.0.2:7777:7777\"",
+            "title": "Networking"
+        },
+        {
+            "location": "/#config-files",
+            "text": "All  *.conf  files in the  conf.d/  directory will be picked up by nginx.  The config files must be named  *.conf .",
+            "title": "Config files"
+        },
+        {
+            "location": "/#volumes",
+            "text": "No data volumes are used.   nginx static content is a bind-mounted host directory  lets encrypt generates site certs, which will be bind-mounted into host directory   Here is the volumes directive in  docker-compose.yml :      volumes:\n      - \"./conf.d:/etc/nginx/conf.d\"\n      - \"/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro\"\n      - \"/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro\"\n      - \"/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro\"  The first line sets the nginx config files,\nthe rest set the static content locations.",
+            "title": "Volumes"
+        },
+        {
+            "location": "/#backups",
+            "text": "Site content comes from git.charlesreid1.com,\nnothing to back up.",
+            "title": "Backups"
+        },
+        {
+            "location": "/#workflow",
+            "text": "",
+            "title": "Workflow"
+        },
+        {
+            "location": "/#static-content-directory-layout",
+            "text": "Directories with static content are bind-mounted\nread-only into the container. To update the content\nbeing served, just update the content directory\non the host.  (This enables you to use version control to \ntrack the live site contents.)  The section below covers how accomplish this layout.\nYou should have your web content laid out as follows\non the host:  /www\n    example.com/\n        htdocs/\n            index.html\n            ...\n        example.com-src/\n            README.md\n            pelican/\n            ...\n        git/\n            <contents of .git dir>\n            ...\n\n    example2.com/\n        htdocs/\n            ...\n        example2.com-src/\n            ...\n        git/\n            ...  In the container, you will have a mirrored directory\nstructure, but only  htdocs :  /www\n    example.com/\n        htdocs/\n            index.html\n            ...\n\n    example2.com/\n        htdocs/\n            ...",
+            "title": "Static Content Directory Layout"
+        },
+        {
+            "location": "/#deploying-static-content-with-git",
+            "text": "You can use git to deploy static content, but take care\nnot to put your  .git  directory into the live \nweb directory.  git clone \\\n  --separate-git-dir=/www/example.com/git \\\n  -b gh-pages \\\n  <url-of-static-site> \\\n  /www/example.com/htdocs  Let's walk through that:   Clone command to deploy content fresh  Separate git dir to keep git from being live  Branch  gh-pages  (we decided to match Github's convention)  Url of static site from git.charlesreid1.com  The path of the final cloned repo (bind mounted into container)   See scripts for details.",
+            "title": "Deploying Static Content with Git"
+        },
+        {
+            "location": "/#updating-static-content-with-git",
+            "text": "git pull \\  specify git-dir  specify work-dir",
+            "title": "Updating Static Content with Git"
+        }
+    ]
+}
