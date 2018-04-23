@@ -1,0 +1,20 @@
+site_name: d-nginx-subdomains
+docs_dir: docs
+site_dir: site
+extra_css:
+  - css/custom.css
+theme: 
+  name: null
+  custom_dir: 'mkdocs-material/material'
+  palette:
+    primary: 'light green'
+    accent: 'light green'
+  logo:
+    icon: 'input'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+markdown_extensions:
+  - admonition
+pages:
+  - 'Home':         'index.md'
