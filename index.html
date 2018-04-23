@@ -277,7 +277,7 @@ the rest set the static content locations.</p>
 <p>Site content comes from git.charlesreid1.com,
 nothing to back up.</p>
 <h1 id="workflow">Workflow</h1>
-<h3 id="static-content-directory-layout">Static Content Directory Layout</h3>
+<h2 id="static-content-directory-layout">Static Content Directory Layout</h2>
 <p>Directories with static content are bind-mounted
 read-only into the container. To update the content
 being served, just update the content directory
@@ -322,7 +322,7 @@ structure, but only <code>htdocs</code>:</p>
             ...
 </code></pre>
 
-<h3 id="deploying-static-content-with-git">Deploying Static Content with Git</h3>
+<h2 id="deploying-static-content-with-git">Deploying Static Content with Git</h2>
 <p>You can use git to deploy static content, but take care
 not to put your <code>.git</code> directory into the live 
 web directory.</p>
@@ -342,12 +342,12 @@ web directory.</p>
 <li>The path of the final cloned repo (bind mounted into container)</li>
 </ul>
 <p>See scripts for details.</p>
-<h3 id="updating-static-content-with-git">Updating Static Content with Git</h3>
-<pre><code>git pull \
+<h2 id="updating-static-content-with-git">Updating Static Content with Git</h2>
+<pre><code>git \
+    --git-dir=/www/example.com/git \
+    --work-tree=/www/example.com/htdocs/reponame \
+    pull origin gh-pages
 </code></pre>
-
-<p>specify git-dir</p>
-<p>specify work-dir</p>
                 
                   
                 
