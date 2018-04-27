@@ -11,6 +11,8 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
+        <link rel="canonical" href="https://pages.charlesreid1.com/d-nginx-subdomains/">
+      
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -85,7 +87,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="." title="d-nginx-subdomains" class="md-header-nav__button md-logo">
+        <a href="https://pages.charlesreid1.com/d-nginx-subdomains" title="d-nginx-subdomains" class="md-header-nav__button md-logo">
           
             <i class="md-icon">input</i>
           
@@ -139,6 +141,24 @@
         
       </div>
       
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://git.charlesreid1.com/docker/d-nginx-subdomains" title="Go to repository" class="md-source" data-md-source="">
+    
+    <div class="md-source__repository">
+      d-nginx-subdomains
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
     </div>
   </nav>
 </header>
@@ -163,6 +183,22 @@
     </span>
     d-nginx-subdomains
   </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://git.charlesreid1.com/docker/d-nginx-subdomains" title="Go to repository" class="md-source" data-md-source="">
+    
+    <div class="md-source__repository">
+      d-nginx-subdomains
+    </div>
+  </a>
+
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -215,13 +251,15 @@
               
                 
                 
-                <h1 id="d-nginx-subdomains">d-nginx-subdomains</h1>
+                <h1 id="d-nginx-subdomains">d-nginx-subdomains<a class="headerlink" href="#d-nginx-subdomains" title="Permanent link">&para;</a></h1>
 <p>This repo contains docker containers
 and a docker compose file for running
 an nginx web server for subdomain
 one-pagers.</p>
-<p>The services are just:
-* nginx</p>
+<p>The services are just:</p>
+<ul>
+<li>nginx</li>
+</ul>
 <p>This is also intended to be reverse proxied
 by another frontend nginx server,
 so this one-container pod will bind 
@@ -229,7 +267,7 @@ to a VPN IP address and establish
 (unecrypted) HTTP connections over the 
 (encrypted) VPN connection.</p>
 <p>Pretty simple, right?</p>
-<h1 id="networking">Networking</h1>
+<h1 id="networking">Networking<a class="headerlink" href="#networking" title="Permanent link">&para;</a></h1>
 <p>The setup for this one-container docker pod 
 is to have an nginx container bound to all
 addresses inside the container (see nginx.conf
@@ -239,45 +277,48 @@ on the host (see docker-compose selection below).</p>
 <p>The nginx configuration file contains a listen
 directive that binds nginx to all addresses 
 inside the container:</p>
-<pre><code>server {
+<div class="codehilite"><pre><span></span>server {
     listen *:7777;
-</code></pre>
+</pre></div>
+
 
 <p>Meanwhile, in the <code>docker-compose.yml</code> file,
 we bind the container's port 7777 to the 
 host's port 7777, but only on a private
 IP address:</p>
-<pre><code>servies:
+<div class="codehilite"><pre><span></span>servies:
   stormy_nginx_subs:
     ...
     ports:
       - &quot;10.5.0.2:7777:7777&quot;
-</code></pre>
+</pre></div>
 
-<h1 id="config-files">Config files</h1>
+
+<h1 id="config-files">Config files<a class="headerlink" href="#config-files" title="Permanent link">&para;</a></h1>
 <p>All <code>*.conf</code> files in the <code>conf.d/</code> directory will be picked up by nginx.</p>
 <p>The config files must be named <code>*.conf</code>.</p>
-<h1 id="volumes">Volumes</h1>
+<h1 id="volumes">Volumes<a class="headerlink" href="#volumes" title="Permanent link">&para;</a></h1>
 <p>No data volumes are used.</p>
 <ul>
 <li>nginx static content is a bind-mounted host directory</li>
 <li>lets encrypt generates site certs, which will be bind-mounted into host directory</li>
 </ul>
 <p>Here is the volumes directive in <code>docker-compose.yml</code>:</p>
-<pre><code>    volumes:
+<div class="codehilite"><pre><span></span>    volumes:
       - &quot;./conf.d:/etc/nginx/conf.d&quot;
       - &quot;/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro&quot;
       - &quot;/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro&quot;
       - &quot;/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro&quot;
-</code></pre>
+</pre></div>
+
 
 <p>The first line sets the nginx config files,
 the rest set the static content locations.</p>
-<h1 id="backups">Backups</h1>
+<h1 id="backups">Backups<a class="headerlink" href="#backups" title="Permanent link">&para;</a></h1>
 <p>Site content comes from git.charlesreid1.com,
 nothing to back up.</p>
-<h1 id="workflow">Workflow</h1>
-<h2 id="static-content-directory-layout">Static Content Directory Layout</h2>
+<h1 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">&para;</a></h1>
+<h2 id="static-content-directory-layout">Static Content Directory Layout<a class="headerlink" href="#static-content-directory-layout" title="Permanent link">&para;</a></h2>
 <p>Directories with static content are bind-mounted
 read-only into the container. To update the content
 being served, just update the content directory
@@ -287,7 +328,7 @@ track the live site contents.)</p>
 <p>The section below covers how accomplish this layout.
 You should have your web content laid out as follows
 on the host:</p>
-<pre><code>/www
+<div class="codehilite"><pre><span></span>/www
     example.com/
         htdocs/
             index.html
@@ -307,11 +348,12 @@ on the host:</p>
             ...
         git/
             ...
-</code></pre>
+</pre></div>
+
 
 <p>In the container, you will have a mirrored directory
 structure, but only <code>htdocs</code>:</p>
-<pre><code>/www
+<div class="codehilite"><pre><span></span>/www
     example.com/
         htdocs/
             index.html
@@ -320,18 +362,20 @@ structure, but only <code>htdocs</code>:</p>
     example2.com/
         htdocs/
             ...
-</code></pre>
+</pre></div>
 
-<h2 id="deploying-static-content-with-git">Deploying Static Content with Git</h2>
+
+<h2 id="deploying-static-content-with-git">Deploying Static Content with Git<a class="headerlink" href="#deploying-static-content-with-git" title="Permanent link">&para;</a></h2>
 <p>You can use git to deploy static content, but take care
 not to put your <code>.git</code> directory into the live 
 web directory.</p>
-<pre><code>git clone \
+<div class="codehilite"><pre><span></span>git clone \
   --separate-git-dir=/www/example.com/git \
   -b gh-pages \
   &lt;url-of-static-site&gt; \
   /www/example.com/htdocs
-</code></pre>
+</pre></div>
+
 
 <p>Let's walk through that:</p>
 <ul>
@@ -342,12 +386,12 @@ web directory.</p>
 <li>The path of the final cloned repo (bind mounted into container)</li>
 </ul>
 <p>See scripts for details.</p>
-<h2 id="updating-static-content-with-git">Updating Static Content with Git</h2>
-<pre><code>git \
+<h2 id="updating-static-content-with-git">Updating Static Content with Git<a class="headerlink" href="#updating-static-content-with-git" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span>git \
     --git-dir=/www/example.com/git \
     --work-tree=/www/example.com/htdocs/reponame \
     pull origin gh-pages
-</code></pre>
+</pre></div>
                 
                   
                 
@@ -368,6 +412,10 @@ web directory.</p>
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>
+          </div>
         
         powered by
         <a href="http://www.mkdocs.org">MkDocs</a>
