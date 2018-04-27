@@ -6,6 +6,7 @@ an nginx web server for subdomain
 one-pagers.
 
 The services are just:
+
 * nginx
 
 This is also intended to be reverse proxied
