@@ -4,7 +4,7 @@ repo_name: d-nginx-subdomains
 repo_url: https://git.charlesreid1.com/docker/d-nginx-subdomains
 edit_uri: ""
 
-copyright: 'Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>'
+copyright: 'Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>, released under the <a href="https://opensource.org/licenses/MIT">MIT license</a>'
 
 docs_dir: docs
 site_dir: site
