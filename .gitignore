@@ -1,3 +1,4 @@
+site/
 letsencrypt/
 letsencrypt_certs/
 nginx.conf.default
