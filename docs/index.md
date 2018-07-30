@@ -34,6 +34,7 @@ inside the container:
 ```
 server {
     listen *:7777;
+    }
 ```
 
 Meanwhile, in the `docker-compose.yml` file,
