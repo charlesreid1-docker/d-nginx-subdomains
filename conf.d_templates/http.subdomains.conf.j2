@@ -22,6 +22,7 @@
 
 server {
     listen 7777;
+    listen [::]:7777;
     server_name pages.{{ server_name_default }};
     ## Only allow IPs in client-allow.conf
     #include /etc/nginx/conf.d/client-allow.conf;
@@ -38,6 +39,7 @@ server {
 
 server {
     listen 7778;
+    listen [::]:7778;
     server_name hooks.{{ server_name_default }};
     ## Only allow IPs in client-allow.conf
     #include /etc/nginx/conf.d/client-allow.conf;
@@ -53,6 +55,7 @@ server {
 
 server {
     listen 7779;
+    listen [::]:7779;
     server_name bots.{{ server_name_default }};
     ## Only allow IPs in client-allow.conf
     #include /etc/nginx/conf.d/client-allow.conf;
