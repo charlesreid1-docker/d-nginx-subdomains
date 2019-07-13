@@ -9,20 +9,20 @@
 # except for the IP of the machine running
 # pod-charlesreid1. This is because this pod
 # is reverse-proxied by the machine running
-# pod-charelsreid1.
+# pod-charlesreid1.
 #
 # Binding to a private ip happens
 # at the docker level, not the nginx level.
 #
-# 7777  pages.charlesreid1.com
-# 7778  hooks.charlesreid1.com
-# 7779  bots.charlesreid1.com
+# 7777  pages.{{ server_name_default }}
+# 7778  hooks.{{ server_name_default }}
+# 7779  bots.{{ server_name_default }}
 # 
 ####################
 
 server {
     listen 7777;
-    server_name pages.charlesreid1.com;
+    server_name pages.{{ server_name_default }};
     ## Only allow IPs in client-allow.conf
     #include /etc/nginx/conf.d/client-allow.conf;
     #deny all;
@@ -30,7 +30,7 @@ server {
     location / {
         index index.html;
         try_files $uri $uri/ $uri/index.html =404;
-        root /www/pages.charlesreid1.com/htdocs;
+        root /www/pages.{{ server_name_default }}/htdocs;
     }
 }
 
@@ -38,14 +38,14 @@ server {
 
 server {
     listen 7778;
-    server_name hooks.charlesreid1.com;
+    server_name hooks.{{ server_name_default }};
     ## Only allow IPs in client-allow.conf
     #include /etc/nginx/conf.d/client-allow.conf;
     #deny all;
     location / {
         index index.html;
         try_files $uri $uri/ $uri/index.html =404;
-        root /www/hooks.charlesreid1.com/htdocs;
+        root /www/hooks.{{ server_name_default }}/htdocs;
     }
 }
 
@@ -53,14 +53,14 @@ server {
 
 server {
     listen 7779;
-    server_name bots.charlesreid1.com;
+    server_name bots.{{ server_name_default }};
     ## Only allow IPs in client-allow.conf
     #include /etc/nginx/conf.d/client-allow.conf;
     #deny all;
     location / {
         index index.html;
         try_files $uri $uri/ $uri/index.html =404;
-        root /www/bots.charlesreid1.com/htdocs;
+        root /www/bots.{{ server_name_default }}/htdocs;
     }
 }
 
